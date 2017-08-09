@@ -10,7 +10,7 @@ router.register({route: new Home(), method: "GET", pattern: "/"});
 
 server.on('request', async (request: IncomingMessage, response: ServerResponse) => {
   const route: Route = await router.match(request);
-  await route.handle(request, response);
+  await route.handle(response);
   response.end();
 });
 
