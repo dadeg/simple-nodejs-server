@@ -13,16 +13,17 @@ export default class Router {
 
   match(request: IncomingMessage): Promise<Route> {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const matchedRouteInfo: RouteRegistrationInfo | undefined = this.registeredRoutes.find(routeInfo => {
         return (routeInfo.method === request.method && routeInfo.pattern === request.url)
       });
 
+      let route = new NullRoute();
       if (matchedRouteInfo) {
-        resolve(matchedRouteInfo.route);
-      } else {
-        reject(new Error('bad url'));
+        route = matchedRouteInfo.route;
       }
+
+      resolve(route);
     });
   }
 }
@@ -35,4 +36,13 @@ export type RouteRegistrationInfo = Readonly<{
 
 export interface Route {
   handle(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse>;
+}
+
+export class NullRoute implements Route {
+  handle(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse> {
+    return new Promise((resolve) => {
+      response.write('silly user, you made a mistake');
+      resolve(response);
+    });
+  }
 }
