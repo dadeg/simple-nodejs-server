@@ -1,5 +1,6 @@
 import {IncomingMessage, Server, ServerResponse} from 'http';
-import Router, {Ping, Route, Home} from './router';
+import Router, {Route} from './router';
+import {Home, Ping} from "./routes";
 
 const server = new Server();
 const router = new Router();

@@ -23,8 +23,6 @@ export default class Router {
       } else {
         reject(new Error('bad url'));
       }
-
-
     });
   }
 }
@@ -37,25 +35,4 @@ export type RouteRegistrationInfo = Readonly<{
 
 export interface Route {
   handle(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse>;
-
-}
-
-export class Ping implements Route {
-  handle(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse> {
-    return new Promise((resolve) => {
-      response.write('pong');
-      resolve(response);
-    });
-  }
-
-}
-
-export class Home implements Route {
-  handle(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse> {
-    return new Promise((resolve) => {
-      response.write('Hello World!');
-      resolve(response);
-    });
-  }
-
 }
