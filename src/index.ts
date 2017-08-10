@@ -16,13 +16,14 @@ const persistenceHelper = new FakePersister();
 router.register({route: new Ping(), method: "GET", pattern: "/ping"});
 router.register({route: new Home(), method: "GET", pattern: "/"});
 router.register({route: new Task(persistenceHelper), method: "GET", pattern: "/tasks"});
+router.register({route: new Task(persistenceHelper), method: "POST", pattern: "/tasks"});
 
 server.on('request', async (request: IncomingMessage, response: ServerResponse) => {
   response.setHeader('Content-Type', 'application/json');
 
   try {
     const route: Route = await router.match(request);
-    await route.handle(response);
+    await route.handle(request, response);
   } catch (error) {
     response.statusCode = 500;
     response.write(error.message);

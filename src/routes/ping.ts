@@ -1,8 +1,8 @@
-import {Route} from "../router";
-import {ServerResponse} from "http";
+import {IncomingMessage, ServerResponse} from "http";
+import {CrudRoute} from "./crud-route";
 
-export default class Ping implements Route {
-  handle(response: ServerResponse): Promise<ServerResponse> {
+export default class Ping extends CrudRoute {
+  get(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse> {
     return new Promise((resolve) => {
       response.write('pong');
       resolve(response);

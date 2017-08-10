@@ -37,5 +37,5 @@ export type RouteRegistrationInfo = Readonly<{
 }>
 
 export interface Route {
-  handle(response: ServerResponse): Promise<ServerResponse>;
+  handle(request: IncomingMessage, response: ServerResponse): Promise<ServerResponse>;
 }
