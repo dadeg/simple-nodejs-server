@@ -5,17 +5,15 @@ export default class Router {
 
   constructor() {
     this.registeredRoutes = [];
-    this.registeredRoutes.unshift({route: new NullRoute(), method: "GET", pattern: "default route not found"})
   }
 
   register(routeInfo: RouteRegistrationInfo) {
-    this.registeredRoutes.unshift(routeInfo);
+    this.registeredRoutes.push(routeInfo);
   }
 
   match(request: IncomingMessage): Promise<Route> {
     return new Promise((resolve) => {
-      const route: Route = this.getMatchedRoute(request);
-      resolve(route);
+      resolve(this.getMatchedRoute(request));
     });
   }
 
@@ -27,11 +25,10 @@ export default class Router {
     if (matchedRouteInfo) {
       return matchedRouteInfo.route;
     } else {
-      return new NullRoute();
+      throw new Error("no route found.");
     }
   }
 }
-
 
 export type RouteRegistrationInfo = Readonly<{
   route: Route;
@@ -41,13 +38,4 @@ export type RouteRegistrationInfo = Readonly<{
 
 export interface Route {
   handle(response: ServerResponse): Promise<ServerResponse>;
-}
-
-export class NullRoute implements Route {
-  handle(response: ServerResponse): Promise<ServerResponse> {
-    return new Promise((resolve) => {
-      response.write('silly user, you made a mistake');
-      resolve(response);
-    });
-  }
 }
